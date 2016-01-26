@@ -6,8 +6,8 @@ drop table if exists Rating;
 -- Create the schema for our tables.
 -- TASK A: complete the schema. TWe did the Reviewer.
 create table Movie(mID int, title text, year int, director text);
-create table Reviewer( /* COMPLETE ME */ );
-create table Rating( /* COMPLETE ME */ );
+create table Reviewer(uID int, name text );
+create table Rating(uID int, mID int, rating int, day text);
 
 
 -- Movie data.
@@ -31,6 +31,8 @@ insert into Reviewer values(205, 'Chris Jackson');
 insert into Reviewer values(206, 'Elizabeth Thomas');
 insert into Reviewer values(207, 'James Cameron');
 insert into Reviewer values(208, 'Ashley White');
+insert into Reviewer values(209, 'amused-deer');
+insert into Reviewer values(210, 'enthusiastic-salmon');
 -- TASK B: Add yourself to these data using your course nickname
 
 -- Rating data.
@@ -49,20 +51,27 @@ insert into Rating values(206, 107, 3, '2011-01-15');
 insert into Rating values(206, 106, 5, '2011-01-19');
 insert into Rating values(207, 107, 5, '2011-01-20');
 insert into Rating values(208, 104, 3, '2011-01-02');
+insert into Rating values(209, 103, 5, '2016-01-26');
+insert into Rating values(210, 105, 5, '2016-01-10');
 -- TASK C: Add yourself to these data
 
 
 -- TASK D: Write a query that shows how many movies there are.
 --         Hint: use COUNT
+SELECT count(title) FROM movie;
 
 -- TASK E: Write a query that shows which three people submitted the most reviews.
 --         Hint: use ORDER BY, and LIMIT
+select uID from Rating order by uID desc limit 3;
 
 -- TASK F: Write a query that shows the top 3 rated movies
 --         Hint: use LEFT JOIN, ORDER BY, and LIMIT
+SELECT * FROM movie LEFT JOIN rating ON movie.mID = rating.mID ORDER BY rating DESC LIMIT 3;
 
--- TASK G: Write a query that shows how many ratings each move received
+-- TASK G: Write a query that shows how many ratings each movie received
 --         Hint: use LEFT JOIN, GROUP BY, and COUNT
+select title, count(rating) from movie left join rating on movie.mID = rating.mID group by title;
 
 -- TASK H: Write a query that shows which user gives the lowest average rating
 --         Hint: use JOIN, GROUP BY, and AVERAGE
+select name, avg(rating) from reviewer left join rating on reviewer.uID = rating.uID group by name order by avg(rating) asc limit 1;
